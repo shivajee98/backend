@@ -16,9 +16,21 @@ export const getUserProfile = async (req, res) => {
 // Update user profile
 export const updateUserProfile = async (req, res) => {
   try {
-    const user = await User.findByIdAndUpdate(req.params.userId, req.body, {
+    // Set undefined or empty fields to null in the request body
+    const updateData = {};
+    for (const key in req.body) {
+      if (req.body[key] === undefined || req.body[key] === '') {
+        updateData[key] = null; // Set to null if not provided or empty
+      } else {
+        updateData[key] = req.body[key];
+      }
+    }
+
+    // Find and update the user
+    const user = await User.findByIdAndUpdate(req.params.userId, updateData, {
       new: true,
     });
+
     if (!user) return res.status(404).json({ message: "User not found" });
     res.json(user);
   } catch (error) {

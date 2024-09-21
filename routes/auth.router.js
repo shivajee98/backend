@@ -21,12 +21,13 @@ router.get("/google/callback",
       }
 
       const tokens = await generateTokens(user._id);
+      
 
       res.cookie('accessToken', tokens.accessToken, { httpOnly: true });
       res.cookie('refreshToken', tokens.refreshToken, { httpOnly: true });
 
       // Redirect to the frontend root with a query parameter
-      res.redirect('http://localhost:5173/?login=success');
+      res.redirect(`http://localhost:5173/profile/${user._id}`);
     } catch (error) {
       console.error(error);
       res.redirect('/'); // Redirect to the failure page or handle error appropriately

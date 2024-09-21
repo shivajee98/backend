@@ -10,6 +10,7 @@ import userRouter from './routes/article.router.js';
 import authRouter from './routes/auth.router.js'; // Import the auth routes
 import profileRouter from './routes/user.router.js'; // Import profile routes
 import authMiddleware from './middlewares/auth.middleware.js'; // Import the auth middleware
+import { uploadImage } from "./controllers/upload.controller.js";
 
 const app = express();
 
@@ -18,8 +19,8 @@ app.use(cors({
     credentials: true // Allow credentials (cookies, etc.)
 }));
 
-app.use(express.json({ limit: "1600kb" }));
-app.use(express.urlencoded({ extended: true, limit: "1600kb" }));
+app.use(express.json({ limit: "5mb" }));
+app.use(express.urlencoded({ extended: true, limit: "5mb" }));
 app.use(express.static("public"));
 app.use(cookieParser());
 
@@ -39,5 +40,6 @@ app.use(passport.session());
 app.use("/auth", authRouter); // Use the auth routes
 app.use("/api/articles",authMiddleware, userRouter);
 app.use("/api/profile", profileRouter); // Add profile route to the application
+app.post("/api/upload", uploadImage)
 
 export { app };

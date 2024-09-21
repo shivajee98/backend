@@ -1,8 +1,8 @@
-// backend/config/passport.js
 import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { User } from "../models/users.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+
 passport.use(
   new GoogleStrategy(
     {
@@ -16,13 +16,27 @@ passport.use(
         let user = await User.findOne({ googleId: profile.id });
 
         if (user) {
+          // Update tokens if user exists
           user.accessToken = accessToken;
           user.refreshToken = refreshToken;
           await user.save();
         } else {
+          // Generate unique username
+          let username = profile.displayName;
+          let existingUser = await User.findOne({ username });
+
+          let counter = 1;
+          while (existingUser) {
+            // Modify username to make it unique
+            username = `${profile.displayName} (${counter})`;
+            existingUser = await User.findOne({ username });
+            counter++;
+          }
+
+          // Create new user with unique username
           user = await User.create({
             googleId: profile.id,
-            username: profile.displayName,
+            username: username,
             email: profile.emails[0].value,
             avatar: profile.photos[0].value,
             fullName: profile.displayName,
@@ -38,7 +52,6 @@ passport.use(
     }
   )
 );
-
 
 passport.serializeUser((user, done) => {
   done(null, user.id);

@@ -1,5 +1,5 @@
 // src/models/article.model.js
-import mongoose, {Schema} from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const articleSchema = new Schema(
     {
@@ -8,12 +8,17 @@ const articleSchema = new Schema(
             required: true,
             trim: true
         },
-
-        paragraph : {
+        paragraph: {
             type: String,
             required: true
         },
-    }, 
-    {timestamps: true})
+        author: {
+            type: Schema.ObjectId,
+            ref: 'User', // Reference to the User model
+            required: true
+        }
+    },
+    { timestamps: true }
+);
 
-    export const Article = mongoose.model("Article", articleSchema)
+export const Article = mongoose.model("Article", articleSchema);
