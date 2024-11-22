@@ -1,5 +1,6 @@
 // src/models/article.model.js
 import mongoose, { Schema } from "mongoose";
+import { Comment } from "./comment.models.js";
 
 const articleSchema = new Schema(
     {
@@ -16,6 +17,11 @@ const articleSchema = new Schema(
             type: Schema.ObjectId,
             ref: 'User', // Reference to the User model
             required: true
+        },
+        comments: [Comment.schema],
+        likes: {
+            type: Number,
+            default: 0
         }
     },
     { timestamps: true }

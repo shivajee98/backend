@@ -11,7 +11,7 @@ const generateTokens = async (userId) => {
     const accessToken = user.generateAccessToken();
     const refreshToken = user.generateRefreshToken();
 
-    // Optionally save the refresh token in the database if ne  eded
+    // Optionally save the refresh token in the database if needed
     user.refreshToken = refreshToken;
     await user.save({ validateBeforeSave: false });
 

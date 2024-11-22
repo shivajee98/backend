@@ -42,7 +42,7 @@ const postArticle = asyncHandler(async (req, res) => {
 
 const getArticles = async (req, res) => {
   try {
-    const articles = await Article.find().populate('author', 'fullName username'); // Fetch all articles with author details
+    const articles = await Article.find().populate('author', 'fullName username').exec(); // Fetch all articles with author details
     res.status(200).json(articles);
   } catch (error) {
     res.status(500).json({ message: "Failed to fetch articles" });
@@ -51,7 +51,10 @@ const getArticles = async (req, res) => {
 
 const getSpecificArticle = asyncHandler(async (req, res) => {
   try {
-    const article = await Article.findById(req.params.id).populate('author', 'fullName username'); // Include author details
+    const article = await Article.findById(req.params.id)
+    .populate('author', 'fullName') // Populate author's full name for the article
+    .populate('comments.author', 'fullName'); // Populate fullName for each comment's author
+
     if (!article) throw new ApiError(404, "Post Not Found");
     res.json(article);
   } catch (error) {

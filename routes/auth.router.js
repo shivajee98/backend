@@ -21,10 +21,11 @@ router.get("/google/callback",
       }
 
       const tokens = await generateTokens(user._id);
-      
 
+      // Convert user._id to string before setting the cookie
       res.cookie('accessToken', tokens.accessToken, { httpOnly: true });
       res.cookie('refreshToken', tokens.refreshToken, { httpOnly: true });
+      res.cookie('userId', String(user._id), { httpOnly: false, secure: true }); // Use String() to ensure a plain string value
 
       // Redirect to the frontend root with a query parameter
       res.redirect(`http://localhost:5173/profile/${user._id}`);
@@ -35,11 +36,11 @@ router.get("/google/callback",
   }
 );
 
-
 // Route to logout
 router.get("/logout", (req, res) => {
   res.clearCookie("accessToken"); // Remove the token from cookies if stored there
   res.clearCookie("refreshToken"); // Remove the refresh token from cookies if stored there
+  res.clearCookie("userId"); // Clear the userId cookie
   req.logout((err) => {
     if (err) {
       return res.status(500).send("Logout failed");

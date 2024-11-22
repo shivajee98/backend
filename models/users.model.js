@@ -27,11 +27,12 @@ const userSchema = new Schema(
         },
         avatar: {
             type: String, // Cloudinary URL
+            sparse: true,
             required: true,
         },
         coverImage: {
             type: String,
-            default: null, // Allow null value
+            sparse: true,
         },
         googleId: {
             type: String, // Store Google user ID
@@ -43,22 +44,27 @@ const userSchema = new Schema(
         },
         website: {
             type: String,
-            default: null, // Allow null value
+            unique: true,
+            sparse: true
+            // default: null, // Allow null value
         },
         twitter: {
             type: String,
+            sparse: true,
             unique: true,
-            default: null, // Allow null value
+            // default: null, // Allow null value
         },
         github: {
             type: String,
+            sparse: true,
             unique: true,
-            default: null, // Allow null value
+            // default: null, // Allow null value
         },
         linkedin: {
             type: String,
+            sparse: true,
             unique: true,
-            default: null, // Allow null value
+            // default: null, // Allow null value
         },
         articles: [
             {
