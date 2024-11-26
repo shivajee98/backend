@@ -28,7 +28,7 @@ cloudinary.config({
 
 // Basic middlewares setup
 app.use(cors({
-    origin: 'http://localhost:5173', // Your frontend origin
+    origin: ['http://localhost:5173', 'http://54.162.160.221'], // Your frontend origin
     credentials: true // Allow credentials (cookies, etc.)
 }));
 
