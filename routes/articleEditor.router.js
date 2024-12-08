@@ -7,5 +7,6 @@ const router = Router();
 
 // Apply checkOwnership only to routes that need it
 router.put('/articles/:id', checkOwnership, updateArticle); // Route for updating an article
+// sfofuvb
 
 export default router;
